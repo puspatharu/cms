@@ -1,6 +1,5 @@
-import React from 'react'
 
-import Form from '../components/pagecomponents/form'
+
 import HeroSection from '../components/pagecomponents/Home/HeroSection'
 import Aboutsection from '../components/pagecomponents/Home/Aboutsection'
 import Menusection from '../components/pagecomponents/Home/Menusection'
@@ -14,7 +13,7 @@ function Home() {
       <Menusection />
       <Reviewsection />
       <Blogsection />
-      {/* <Form /> */}
+   
     </div>
   )
 }
