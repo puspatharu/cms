@@ -26,21 +26,8 @@ function Category() {
        image:<img src={img4}></img>,
        des:'inappropriate behavior is often laughed off as “boys will be'
     },
-  ]
- 
- const abc=()=>{
-   if(open){
-return (
-  <div className=''>abc</div>
-)
+  ] 
 
-
-
-
-   }else{
-return null;
-   }
-  }
   return (
     <div className='flex flex-col items-center py-5'>
       
@@ -65,7 +52,7 @@ return null;
               <td className='border-1 px-2  w-14'>{val.des}</td>
               <td className='px-4 py-1 flex gap-2 h-28 items-center justify-center'>
                 <button className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-0.5 text-sm'>Edit</button>
-                <button onClick={abc} className='bg-red-700 px-2 text-white rounded-sm py-0.5 text-sm hover:bg-red-800'>Delete</button>
+                <button className='bg-red-700 px-2 text-white rounded-sm py-0.5 text-sm hover:bg-red-800'>Delete</button>
               </td>
               </tr>
           )
