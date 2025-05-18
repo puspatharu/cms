@@ -1,5 +1,5 @@
 
-import React from 'react'
+
 import Homesection from '../components/pagecomponents/Blog/Homesection'
 import BlogSection from '../components/pagecomponents/Blog/BlogSection'
 import SearchSection from '../components/pagecomponents/Blog/SearchSection'

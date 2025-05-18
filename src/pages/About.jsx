@@ -1,15 +1,10 @@
-import React from 'react'
+
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 function About() {
 
-// const forms=[
-//   {name:'username',type:'text'},
-//   {name:"email",type:'text'},
-//   {name:"password",type:'password'},
-//   {name:"confirm_password",type:"password"}
-// ];
+
 
   const Schema = Yup.object({
     username: Yup.string().min(3).max(20).required("requied"),

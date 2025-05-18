@@ -1,5 +1,5 @@
 
-import React from 'react'
+
 import img1 from '../assets/cat-widget1.jpg.webp'
 import img2 from '../assets/cat-widget2.jpg.webp'
 import img3 from '../assets/cat-widget3.jpg.webp'

@@ -1,5 +1,5 @@
 
-import React from 'react'
+
 import img1 from '../assets/b1.jpg.webp'
 import img2 from '../assets/b2.jpg.webp'
 import img3 from '../assets/b3.jpg.webp'
