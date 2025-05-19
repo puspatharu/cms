@@ -40,7 +40,7 @@ const item=[
   return (
      <div className='flex flex-col items-center py-5'>
       
-     <table className='border-1 w-11/12'>
+     <table className='border-1 w-10/12'>
       <thead className='border-1'>
         <tr className='bg-secondary text-white'>
           <th className='border-1 border-black py-1.5 px-1.5'>S.N</th>

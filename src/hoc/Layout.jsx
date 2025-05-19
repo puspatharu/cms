@@ -1,12 +1,12 @@
-import React from 'react'
+
 import Toolbar from '../components/navigation/Toolbar'
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/navigation/Sidebar'
 function Layout() {
   return (
    
-      <div className='grid w-screen h-screen  lg:grid-cols-12'>
-        <div className='lg:col-span-2 hidden lg:flex bg-secondary'>
+      <div className='grid w-screen h-screen overflow-clip  lg:grid-cols-12'>
+        <div className='lg:col-span-2 hidden lg:flex overflow-y-scroll bg-secondary'>
           <Sidebar />
         </div>
 

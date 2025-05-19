@@ -1,70 +1,81 @@
 import React from 'react'
 import Logo from '../../assets/logo.webp';
 import { Link } from 'react-router-dom';
-// import { IoMdHome, IoIosMenu } from "react-icons/io";
-// import { MdContactPhone } from "react-icons/md";
-// import { FcAbout } from "react-icons/fc";
+import { IoMdHome, IoIosMenu } from "react-icons/io";
+import { MdContactPhone, MdCardMembership, Md18UpRating  } from "react-icons/md";
+import { SiElement } from "react-icons/si";
+
+import { GrCatalog } from "react-icons/gr";
+import { FaInfoCircle,FaBlog,FaAddressCard  } from "react-icons/fa";
 function Sidebar() {
   const nav = [
     {
       name: 'Home',
       link: '/',
-      // img: <IoMdHome />
+      img: <IoMdHome />
     },
     {
       name: 'About',
       link: '/about',
-      // img: <FcAbout />
+      img: <FaInfoCircle />
     },
     {
       name: 'Menu',
       link: '/menu',
-      // img: < IoIosMenu />
+      img: <IoIosMenu />
     },
     {
       name:'Team',
-      link:'/team'
+      link:'/team',
+      img:<MdCardMembership />
     },
     {
       name:'Blog',
-      link:'/blog'
+      link:'/blog',
+      img:<FaBlog />
     },
     {
       name:'Element',
-      link:'/element'
+      link:'/element',
+      img:<SiElement />
     },
     {
       name: 'Contact',
       link: '/contact',
-      // img: <MdContactPhone />
+      img: <MdContactPhone />
     },
     {
       name:"category",
-      link:'/category'
+      link:'/category',
+      img:<GrCatalog />
     },
     {
-      name:"menuitem",
-      link:'/menuitem'
+      name:"menu_item",
+      link:'/menuitem',
+      img:<IoIosMenu />
     },
       {
-      name:"blogtable",
-      link:'/blogtable'
+      name:"blog_table",
+      link:'/blogtable',
+      img:<FaBlog />
     },
      {
-      name:"cardtable",
-      link:'/cardtable'
+      name:"card_table",
+      link:'/cardtable',
+      img:<FaAddressCard />
     },
      {
       name:"rating",
-      link:'/rating'
+      link:'/rating',
+      img:<Md18UpRating />
     },
     
     
   ]
 
   return (
-    <div className=''>
-      <div className="flex flex-col gap-8 items-center">
+    
+      <div className="flex flex-col w-full gap-8 items-center">
         <div className='pt-2'>
           <img src={Logo}></img>
         </div>
@@ -73,8 +84,8 @@ function Sidebar() {
             nav.map((val, i) => {
               return (
                 <Link to={val.link} key={i}>
-                  <div className=' flex items-center gap-2 text-white hover:text-primary text-sm font-medium '>
-                    {/* {val.img} */}
+                  <div className=' flex items-center capitalize gap-2 text-white hover:text-primary text-sm font-medium '>
+                    {val.img}
                     {val.name}
                   </div>
                 </Link>
@@ -84,7 +95,7 @@ function Sidebar() {
 
         </div>
       </div>
-    </div>
+ 
   )
 }
 export default Sidebar
