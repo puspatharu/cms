@@ -1,81 +1,39 @@
 
 import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import upload from '../../../assets/upload.webp'
-
-function Reviewsection() {
-  const forms = [
+import { Formik, Form, Field } from 'formik';
+import upload from '../../assets/upload.webp'
+function Edit_Rating({closepop}) {
+   const forms = [
     { name: "title", type: "text" },
     { name: "subtitle", type: "text" },
     { name: "image", type: "file" },
     { name: "event_name", type: "text" },
-     { name: "star_num", type: "number" },
+     { name: "starNum", type: "number" },
     { name: 'description', type: 'text' }
   ]
-  const schema=Yup.object().shape({
-    event_name: Yup.string()
-    .required('Name is required')
-    .test(
-      'is-capitalized',
-      'Name must start with a capital letter',
-      value => value ? /^[A-Z]/.test(value) : true
-    ),
-    star_num:Yup.number()
-    .required('Rating is required')
-    .min(1, 'Minimum rating is 1 star')
-    .max(5, 'Maximum rating is 5 stars'),
-    
-    subtitle:Yup.string().required('subtitle is required'),
-    description:Yup.string().required('subtitle is required'),
-    title:Yup.string()
-        .required('title is reuired')
-        .test(
-          'is-capitalized',
-          'Name must start with a capital letter',
-          value => value ? /^[A-Z]/.test(value) : true
-        ),
-  })
   return (
-    <div className='lg:grid grid-cols-10 w-full gap-28'>
- <div className='col-span-3'>
-        <div className='text-xl font-medium'>
-          Review Section
-        </div>
-        <div className=' text-sm font-medium text-gray-600 '>
-        {/* {
-          forms.map((val,i)=>{
-            return(
-<div key={i}>
-<div className='text-sm text-gray-600 capitalize'>
-  {val.name}
-</div>
-</div>
-            )
-          })
-        } */}
-        <h1>[title, subtitle, image, event_name,Star_Number, description ]</h1>
-        </div>
-      </div>
-    <div className='col-span-7 w-full'>
+    <div className='top-0 left-0 right-0 fixed h-full bg-red-400/20 flex items-center place-content-center'>
+      <div className='bg-white rounded w-5/12'>
+
+<div>
       <Formik initialValues={{
         title: '',
         subtitle: "",
         event_name: "",
         description: '',
-        star_num:'',
+        starNum:'',
         image: "",
         
       }}
         onSubmit={(values) => {
           console.log(values);
         }}
-        validationSchema={schema}>
+       >
 
         {({ values, setFieldValue }) => {
           return (
             <Form>
-              <div className='flex flex-col capitalize gap-5 w-full lg:px-15 lg:py-5 py-4'>
+              <div className='flex flex-col capitalize gap-2 w-full lg:px-15 py-4'>
                 {
                   forms.map((val, i) => {
                     if (val.type == 'file') {
@@ -84,7 +42,7 @@ function Reviewsection() {
                           <label className=' text-base font-semibold'>
                             {val.name}
                             </label>
-                          <label className='text-sm bg-tertiary outline-none h-32 flex flex-col items-center justify-center'>
+                          <label className='text-sm bg-tertiary outline-none h-26 flex flex-col items-center justify-center'>
                             {val.name}
 
                             <input
@@ -115,25 +73,28 @@ function Reviewsection() {
                         <div key={i}>
                           <div className='flex gap-1 flex-col'>
                             <label className='text-base font-semibold py-1'>{val.name}</label>
-                            <Field className='border outline-none px-2 py-2  text-sm  border-gray-500 placeholder:text-gray-500' type={val.type} name={val.name} placeholder={val.type} />
+                            <Field className='border outline-none px-2 py-1  text-sm  border-gray-500 placeholder:text-gray-500' type={val.type} name={val.name} placeholder={val.type} />
                           </div>
-                          <ErrorMessage name={val.name} className='text-red-700 text-[17px]' component='span' />
+                         
                         </div>
                       )
                     }
                   })
                 }
-                <button type='submit' className='border-1.5 border-black rounded-xl w-fit px-4.5 py-2 bg-secondary text-white font-medium'>Submit</button>
+                <div className='flex gap-2'>
+
+                <button type='submit' className='border-1.5 border-black rounded-xl w-fit px-3 py-1 bg-secondary text-white font-medium'>Submit</button>
+                 <button onClick={closepop} type='cancel' className='border-1.5 border-black rounded-xl w-fit px-3 py-1 bg-red-400 text-white font-medium'>Cancel</button>
               </div>
+                </div>
             </Form>
           )
         }}
       </Formik>
     </div>
+  </div>
     </div>
-
   )
 }
 
-export default Reviewsection
-
+export default Edit_Rating

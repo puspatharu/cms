@@ -15,6 +15,7 @@ import Menuitem from './pages/Menuitem'
 import Blogtable from './pages/Blogtable'
 import Cardtable from './pages/Cardtable'
 import Rating from './pages/Rating'
+import Button from './pages/Button'
 function App() {
 
 
@@ -34,6 +35,7 @@ function App() {
           <Route path='/blogtable' element={<Blogtable />} />
           <Route path='/cardtable' element={<Cardtable />} />
           <Route path='/rating' element={<Rating />} /> 
+          <Route path='/button' element={<Button />} />
         </Route>
       </Routes>
 

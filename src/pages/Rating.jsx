@@ -1,7 +1,10 @@
 
 
+import { useState } from 'react'
 import img from '../assets/r1.png.webp'
+import Edit_Rating from '../components/ui/Edit_Rating'
 function Rating() {
+  const [click,setClick]=useState(null)
    const item =[
       {
        title:'Fannie Rowe',
@@ -43,8 +46,36 @@ function Rating() {
               <td className='border-1 px-4  w-20 text-sm'>{val.des}</td>
                  <td className='border-1 px-2'>{val.numberofstar}</td>
               <td className='px-4 py-1 flex gap-2 h-28 items-center justify-center'>
-                <button className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-0.5 text-sm'>Edit</button>
-                <button className='bg-red-700 px-2 text-white rounded-sm py-0.5 text-sm hover:bg-red-800'>Delete</button>
+                <button onClick={()=>{
+                  setClick('edit')
+                }} className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>Edit</button>
+                {
+                  click==='edit'?
+                  <div>
+<Edit_Rating closepop={()=>{
+  setClick()
+}} />
+                  </div>
+                  :null
+                }
+                <button onClick={()=>{
+                  setClick('delete')
+                }} className='bg-red-700 px-2 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
+                {
+                  click==='delete'?
+                  <div className='fixed top-0 left-0 right-0 place-content-center  h-full bg-red-400/50 flex items-center'>
+                    <div className='bg-white h-40 rounded w-3/12 place-content-center gap-6 text-center flex flex-col'>
+                            <p className=''>Are you sure want to delete ?</p>
+                            <div className='flex justify-end  gap-2 px-5'>
+                              <button className='border px-1 rounded'>Yes</button>
+                              <button className='border px-1 rounded' onClick={() => {
+                                setClick(null)
+                              }}>No</button>
+                            </div>
+                          </div>
+                  </div>
+                  :null
+                }
               </td>
               </tr>
           )

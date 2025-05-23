@@ -1,10 +1,12 @@
 
-import React from 'react'
+import React, { useState } from 'react'
  import img1 from '../assets/c1.jpg.webp'
  import img2 from '../assets/c2.jpg.webp'
  import img3 from '../assets/c3.jpg.webp'
  import img4 from '../assets/c4.jpg.webp'
+import Edit_Menu_Section from '../components/ui/Edit_Menu_Section'
 function Category() {
+  const [edit,setEdit] =useState(null)
   const item =[
     {
       itemname:"pizza",
@@ -28,6 +30,7 @@ function Category() {
     },
   ] 
 
+ 
   return (
     <div className='flex flex-col items-center py-5'>
       
@@ -51,8 +54,35 @@ function Category() {
               <td className='border-1 px-4 h-5 w-5'>{val.image}</td>
               <td className='border-1 px-2  w-14'>{val.des}</td>
               <td className='px-4 py-1 flex gap-2 h-28 items-center justify-center'>
-                <button className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-0.5 text-sm'>Edit</button>
-                <button className='bg-red-700 px-2 text-white rounded-sm py-0.5 text-sm hover:bg-red-800'>Delete</button>
+                <button onClick={()=>{
+    setEdit('Edit');
+  }} className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>Edit</button>
+                {
+                  edit==='Edit'?
+                  <div>
+                    <Edit_Menu_Section closepop={()=>setEdit()}/>
+                  </div>
+        
+                  :null
+                }
+                <button onClick={()=>{
+                  setEdit('Delete');
+                }} className='bg-red-700 px-2 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
+                  {
+                  edit==='Delete'?
+                    <div className='fixed top-0 left-0 right-0 h-full bg-red-400/20 place-content-center flex items-center '>
+                      <div className='h-40 w-3/12 flex flex-col gap-6 place-content-center text-center rounded bg-white'>
+                     <p> Are you sure want to delete ?</p>
+                     <div className='flex gap-2 justify-end px-4'>
+                     <button className='border px-1 rounded'>Yes</button>
+                     <button onClick={()=>{
+                      setEdit(null)
+                     }} className='border px-1 rounded'>No</button>
+                     </div>
+                      </div>
+                    </div>
+                  :null
+                }
               </td>
               </tr>
           )

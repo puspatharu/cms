@@ -8,7 +8,8 @@ function Menusection() {
   const forms = [
     {name:'category_list',type:'text'},
     { name: 'title', type: "text" },
-    { name: "subtitle", type: "text" },
+    { name: "description", type: "text" },
+     {name:"size",type:'number'},
     {name:"price",type:'number'}
    
   ];
@@ -21,13 +22,16 @@ function Menusection() {
         'Name must start with a capital letter',
         value => value ? /^[A-Z]/.test(value) : true
       ),
-    subtitle: Yup.string()
-    .required('subtitle is required')
-    .test(
-      'is-capitalized',
-      'Name must start with a capital letter',
-      value => value ? /^[A-Z]/.test(value) : true
-    ),
+    descirption: Yup.string().required('subtitle is required')
+        .test(
+          'is-capitalized',
+          'Name must start with a capital letter',
+          value => value ? /^[A-Z]/.test(value) : true
+        ),
+        size:Yup.number()
+    .typeError('size must be a number')
+    .positive('size must be greater than zero')
+    .required('size is required'),
     
     price:Yup.number()
     .typeError('Price must be a number')
@@ -56,7 +60,7 @@ function Menusection() {
 
 
 <h1>
-  [category_list, title, subtitle, price]
+  [category_list, title, Description, Size, price]
 </h1>
           
          
@@ -67,7 +71,8 @@ function Menusection() {
         <Formik initialValues={{
           category_list:'',
           title: "",
-          subtitle: "",
+          descirption: "",
+          size:'',
     price:""
     
         }}

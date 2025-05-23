@@ -69,6 +69,10 @@ function Sidebar() {
       link:'/rating',
       img:<Md18UpRating />
     },
+     {
+      name:"button",
+      link:'/button',
+    },
     
     
   ]

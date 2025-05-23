@@ -1,10 +1,14 @@
 
 
+import { useState } from 'react'
 import img1 from '../assets/b1.jpg.webp'
 import img2 from '../assets/b2.jpg.webp'
 import img3 from '../assets/b3.jpg.webp'
 import userimg from '../assets/user.png.webp'
+import Edit_Blogtable from '../components/ui/Edit_Blogtable'
+
 function Blogtable() {
+  const [click,setClick] =useState(null)
 const item=[
   {
    blogimage:<img src={img1}></img>,
@@ -67,11 +71,39 @@ const item=[
               <td className='border-1 px-2'>{val.date}</td>
               <td className='border-1 px-2'>{val.react}</td>
               <td className='border-1 px-2'>{val.comment}</td>
-              <td className='border-1 w-2/12 px-1 text-sm'>{val.title}</td>
-              <td className='border-1 w-3/12 px-1 text-sm'>{val.des}</td>
+              <td className='border-1 w-2/12 px-2 text-sm'>{val.title}</td>
+              <td className='border-1 w-3/12 px-2 text-sm'>{val.des}</td>
               <td className='px-4 flex gap-2 h-56 items-center justify-center'>
-                <button className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-0.5 text-sm'>Edit</button> 
-                <button className='bg-red-700 px-2 text-white rounded-sm py-0.5 text-sm hover:bg-red-800'>Delete</button>
+                <button onClick={()=>{
+                  setClick('edit');
+                }} className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>Edit</button> 
+                {
+                  click==='edit'?
+                  <div>
+                    <Edit_Blogtable cancel={()=>{
+                     setClick()
+                    }} />
+                  </div>
+                  :null
+                }
+                <button onClick={()=>{
+                  setClick('delete')
+                }} className='bg-red-700 px-2 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
+                {
+                  click==='delete'?
+                  <div className='fixed top-0 right-0 h-full left-0 bg-red-400/60 place-content-center flex items-center'>
+<div className='place-content-center flex flex-col gap-6 text-center bg-white h-40 w-3/12 rounded'>
+  <p>Are you sure want to delete?</p>
+  <div className='flex justify-end px-5 gap-3'>
+    <button  className='border px-1 rounded'>Yes</button>
+    <button onClick={()=>{
+      setClick(null)
+    }} className='border px-1 rounded'>No</button>
+  </div>
+</div>
+                  </div>
+                  :null
+                }
               </td>
               </tr>
           )
