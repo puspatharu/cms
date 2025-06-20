@@ -1,43 +1,45 @@
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import upload from '../../../assets/upload.webp'
-
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
+import JoditEditor from 'jodit-react';
 function Reviewsection() {
+  const [submit,setSubmit] = useState(false)
+  const [datas,setData] = useState([])
+    const editor = useRef(null);
+      const [content, setContent] = useState('');
   const forms = [
+   
+    { name: "imagereview", type: "file" },
     { name: "title", type: "text" },
-    { name: "subtitle", type: "text" },
-    { name: "image", type: "file" },
-    { name: "event_name", type: "text" },
-     { name: "star_num", type: "number" },
-    { name: 'description', type: 'text' }
+     { name: "numberofstar", type: "number" },
+    { name: 'description', type: 'jodit' }
   ]
-  const schema=Yup.object().shape({
-    event_name: Yup.string()
-    .required('Name is required')
-    .test(
-      'is-capitalized',
-      'Name must start with a capital letter',
-      value => value ? /^[A-Z]/.test(value) : true
-    ),
-    star_num:Yup.number()
-    .required('Rating is required')
-    .min(1, 'Minimum rating is 1 star')
-    .max(5, 'Maximum rating is 5 stars'),
-    
-    subtitle:Yup.string().required('subtitle is required'),
-    description:Yup.string().required('subtitle is required'),
-    title:Yup.string()
-        .required('title is reuired')
-        .test(
-          'is-capitalized',
-          'Name must start with a capital letter',
-          value => value ? /^[A-Z]/.test(value) : true
-        ),
-  })
+   const fileUpload=(data,setFieldValue)=>{
+    console.log(data);
+    try {
+      const formdata=new FormData()
+     formdata.append('files',data)
+      axios.post('http://localhost:3000/fileupload',formdata)
+      .then((result)=>{
+console.log(result.data)
+  setFieldValue('imagereviewid',result.data.id)
+                setFieldValue('imagereview',result.data.file)
+toast.success('successfully submitted')
+      }).catch((eror)=>{
+console.log(eror)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='lg:grid grid-cols-10 w-full gap-28'>
+      <Toaster />
  <div className='col-span-3'>
         <div className='text-xl font-medium'>
           Review Section
@@ -54,25 +56,33 @@ function Reviewsection() {
             )
           })
         } */}
-        <h1>[title, subtitle, image, event_name,Star_Number, description ]</h1>
+        <h1>[ image, Title, Star_Number, description ]</h1>
         </div>
       </div>
     <div className='col-span-7 w-full'>
       <Formik initialValues={{
         title: '',
-        subtitle: "",
-        event_name: "",
         description: '',
-        star_num:'',
-        image: "",
-        
+        numberofstar:'',
+       imagereview: "",
+        imagereviewid:''
       }}
         onSubmit={(values) => {
-          console.log(values);
+           try {
+    axios.post('http://localhost:3000/rating',values).then((result)=>{
+ console.log(result.data)
+              toast.success('successfully submit!')
+              console.log(values);
+    }).catch((err)=>{
+      console.log(err)
+    })
+  } catch (error) {
+    console.log(error)
+  } 
         }}
-        validationSchema={schema}>
+       >
 
-        {({ values, setFieldValue }) => {
+        {({values,setFieldValue }) => {
           return (
             <Form>
               <div className='flex flex-col capitalize gap-5 w-full lg:px-15 lg:py-5 py-4'>
@@ -84,20 +94,21 @@ function Reviewsection() {
                           <label className=' text-base font-semibold'>
                             {val.name}
                             </label>
-                          <label className='text-sm bg-tertiary outline-none h-32 flex flex-col items-center justify-center'>
-                            {val.name}
+                          <label htmlFor={val.name} className='text-sm bg-tertiary outline-none h-60 flex flex-col items-center justify-center'>
+                            {/* {val.name} */}
 
                             <input
                               id={val.name}
                               type={val.type}
                               name={val.name}
                               onChange={(e) => {
-                                setFieldValue(val.name, e.target.files[0]);
+                                fileUpload(e.target.files[0],setFieldValue)
+                                // setFieldValue(val.name, e.target.files[0]);
                               }} className='outline-none hidden' />
-                            <label className='flex items-center justify-center' htmlFor={val.title}>
-                              {values.image ? (
-                                <img src={URL.createObjectURL(values.image)}
-                                  className='h-20'
+                            <label className='flex items-center h-full w-full justify-center' htmlFor={val.name}>
+                              {values.imagereview ? (
+                                <img src={values.imagereview}
+                                  className='h-full w-full object-contain '
                                 />
                               ) : (
 
@@ -110,7 +121,25 @@ function Reviewsection() {
 
                         </div>
                       );
-                    } else {
+                    }
+                    
+                    else if(val.type==='jodit'){
+                        return(
+                          <div key={i} className='flex flex-col gap-2'>
+                            <label className=' text-base font-semibold'>
+                                {val.name}
+                                </label>   
+        <JoditEditor
+          ref={editor}
+          value={content}
+        
+          tabIndex={1} // tabIndex of textarea
+          onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+          onChange={newContent => {}}
+        />
+                          </div>
+                        )
+                      }else {
                       return (
                         <div key={i}>
                           <div className='flex gap-1 flex-col'>

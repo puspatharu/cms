@@ -15,7 +15,7 @@ function Edit_Menuitem({ closepop }) {
   ];
   return (
     <div>
-      <div className='top-0 left-0 right-0 fixed h-full bg-red-400/20 flex items-center place-content-center'>
+      <div className='top-0 left-0 right-0 fixed h-full bg-gray-900/30 flex items-center place-content-center'>
         <div className='bg-white rounded w-5/12'>
           <div className=''>
             <Formik initialValues={{

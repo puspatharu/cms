@@ -1,13 +1,16 @@
 
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Formik, Form, Field,ErrorMessage } from 'formik'
 import * as Yup from "yup"
+import JoditEditor from 'jodit-react';
 function Contactsection() {
+    const editor = useRef(null);
+    const [content, setContent] = useState('');
   const forms = [
     { name: "name", type: "text" },
     { name: "address", type: "text" },
     { name: "contact", type: "number" },
-    { name: "message", type: "text" },
+    { name: "message", type: "jodit" },
   ]
 
   const schema = Yup.object().shape({
@@ -40,9 +43,26 @@ function Contactsection() {
         <div className='flex flex-col capitalize gap-5 w-full lg:px-15 lg:py-5 py-4'>
           {
             forms.map((val, i) => {
-              return (
-
-                <div key={i}>
+             if(val.type==='jodit'){
+                        return(
+                          <div key={i} className='flex flex-col gap-2'>
+                            <label className=' text-base font-semibold'>
+                                {val.name}
+                                </label>   
+        <JoditEditor
+          ref={editor}
+          value={content}
+        
+          tabIndex={1} // tabIndex of textarea
+          onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+          onChange={newContent => {}}
+        />
+                          </div>
+                        )
+                      }
+                      else{
+                        return (
+                          <div key={i}>
                   <div className='flex gap-1 flex-col'>
                     <label className='text-base font-semibold py-1'>{val.name}</label>
                     <Field className="text-[16px] px-2 py-2 border outline-none border-gray-500 placeholder:text-gray-500" type={val.type} name={val.name} placeholder={val.type} />
@@ -50,10 +70,11 @@ function Contactsection() {
                       name={val.name}
                       className='text-red-700 text-[17px]'
                       component='div'
-                    />
+                      />
                   </div>
                 </div>
               )
+            }
             })
 
           }

@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import upload from '../../../assets/upload.webp';
 import * as Yup from 'yup'
+import toast, { Toaster } from 'react-hot-toast';
+import JoditEditor from 'jodit-react';
+import axios from 'axios';
 function Aboutsection() {
+  const [submit,setSubmit] = useState(false)
+   const editor = useRef(null);
+    const [content, setContent] = useState('');
   const forms = [
     { name: "title", type: "text" },
     { name: "subtitle", type: "text" },
-    { name: "description", type: "text" },
-    { name: "image", type: "file" }
+    { name: "description", type: "jodit" },
+    { name: "imageabout", type: "file" }
   ]
 
   const schema = Yup.object().shape({
@@ -22,8 +28,29 @@ function Aboutsection() {
     description: Yup.string().required('subtitle is required'),
 
   });
+
+  const fileUpload=(data,setFieldValue)=>{
+    console.log(data);
+    try {
+      const formdata=new FormData()
+     formdata.append('files',data)
+      axios.post('http://localhost:3000/fileupload',formdata)
+      .then((result)=>{
+console.log(result.data)
+  setFieldValue('imageaboutid',result.data.id)
+                setFieldValue('imageabout',result.data.file)
+toast.success('successfully submitted')
+      }).catch((eror)=>{
+console.log(eror)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='lg:grid grid-cols-10 w-full gap-28'>
+      <Toaster />
       <div className='col-span-3'>
         <div className='text-xl font-medium'>
           About Section
@@ -59,9 +86,12 @@ function Aboutsection() {
         subtitle: '',
         title: '',
         description: '',
-        name: ''
+        imageaboutid:'',
+        imageabout: '',
       }}
         onSubmit={(values) => {
+          setSubmit(true)
+          toast.success('Successfully Submitted')
           console.log(values)
         }}
         validationSchema={schema}
@@ -81,21 +111,22 @@ function Aboutsection() {
                           <label className=' text-base font-semibold'>
                             {val.name}
                             </label>
-                          <label className='text-sm bg-tertiary outline-none h-32 flex flex-col items-center justify-center'>
-                            {val.name}
+                          <label className='text-sm bg-tertiary outline-none h-60 flex flex-col items-center justify-center'>
+                            {/* {val.name} */}
                             <input
                               id={val.name}
                               type={val.type}
                               name={val.name}
                               placeholder={val.type}
                               onChange={(e) => {
-                                setFieldValue(val.name, e.target.files[0]);
+                                fileUpload(e.target.files[0],setFieldValue)
+                                // setFieldValue(val.name, e.target.files[0]);
                               }} className='outline-none hidden'
                             />
-                            <label className='flex items-center justify-center' htmlFor={val.title}>
+                            <label className='flex items-center h-full w-full justify-center' htmlFor={val.name}>
                               {
-                                values.image ? (
-                                  <img src={URL.createObjectURL(values.image)} className='h-25' />
+                                values.imageabout ? (
+                                  <img src={values.imageabout} className='h-full w-full object-contain' />
                                 ) : (
                                   <img className='h-6 w-6' src={upload} />
                                 )
@@ -104,7 +135,25 @@ function Aboutsection() {
                           </label>
                         </div>
                       )
-                    } else {
+                    }
+                    else if(val.type==='jodit'){
+                        return(
+                          <div key={i} className='flex flex-col gap-2'>
+                            <label className=' text-base font-semibold'>
+                                {val.name}
+                                </label>   
+        <JoditEditor
+          ref={editor}
+          value={content}
+        
+          tabIndex={1} // tabIndex of textarea
+          onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+          onChange={newContent => {}}
+        />
+                          </div>
+                        )
+                      }
+                    else {
 
                       return (
                         <div key={i}>

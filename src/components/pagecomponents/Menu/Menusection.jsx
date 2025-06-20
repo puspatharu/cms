@@ -1,14 +1,16 @@
 
 
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Form, Formik, Field, ErrorMessage } from 'formik'
 import upload from '../../../assets/upload.webp'
 import * as Yup from 'yup'
-function Menusection() {
+import JoditEditor from 'jodit-react';
+function Menusection() {  const editor = useRef(null);
+    const [content, setContent] = useState('');
   const forms = [
     {name:'category_list',type:'text'},
     { name: 'title', type: "text" },
-    { name: "description", type: "text" },
+    { name: "description", type: "jodit" },
      {name:"size",type:'number'},
     {name:"price",type:'number'}
    
@@ -91,37 +93,55 @@ function Menusection() {
                 <div className='flex flex-col gap-6 capitalize w-full lg:px-15 lg:py-5 py-4'>
                   {
                     forms.map((val, i) => {
-                      if (val.type == 'file') {
-                        return (
+                      if(val.type==='jodit'){
+                        return(
                           <div key={i} className='flex flex-col gap-2'>
                             <label className=' text-base font-semibold'>
-                            {val.name}
-                            </label>
-                            <label className='text-sm bg-tertiary outline-none h-32 flex-col flex items-center justify-center'>
-                              {val.name}
-                              <input
-                                id={val.name}
-                                type={val.type}
-                                name={val.name}
-                                onChange={(e) => {
-                                  setFieldValue(val.name, e.target.files[0]);
-                                }} className='outline-none hidden' />
-                              <label className='flex items-center justify-center' htmlFor={val.title}>
-                                {values.image ? (
-                                  <img src={URL.createObjectURL(values.image)}
-                                    className='h-14'
-                                  />
-                                ) : (
-
-                                  <img className='h-6 w-6' src={upload}
-
-                                  />
-                                )}
-                              </label>
-                            </label>
+                                {val.name}
+                                </label>   
+        <JoditEditor
+          ref={editor}
+          value={content}
+        
+          tabIndex={1} // tabIndex of textarea
+          onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+          onChange={newContent => {}}
+        />
                           </div>
-                        );
-                      } else {
+                        )
+                      }
+                      // if (val.type == 'file') {
+                      //   return (
+                      //     <div key={i} className='flex flex-col gap-2'>
+                      //       <label className=' text-base font-semibold'>
+                      //       {val.name}
+                      //       </label>
+                      //       <label className='text-sm bg-tertiary outline-none h-32 flex-col flex items-center justify-center'>
+                      //         {val.name}
+                      //         <input
+                      //           id={val.name}
+                      //           type={val.type}
+                      //           name={val.name}
+                      //           onChange={(e) => {
+                      //             setFieldValue(val.name, e.target.files[0]);
+                      //           }} className='outline-none hidden' />
+                      //         <label className='flex items-center justify-center' htmlFor={val.name}>
+                      //           {values.image ? (
+                      //             <img src={URL.createObjectURL(values.image)}
+                      //               className='h-14'
+                      //             />
+                      //           ) : (
+
+                      //             <img className='h-6 w-6' src={upload}
+
+                      //             />
+                      //           )}
+                      //         </label>
+                      //       </label>
+                      //     </div>
+                      //   );
+                      // } 
+                      else {
                         return (
                           <div key={i}>
                             <div className='flex gap-1 flex-col'>
@@ -131,12 +151,12 @@ function Menusection() {
                                 name={val.name}
                                 className='text-red-700 text-[17px]'
                                 component='span'
-                              />
+                                />
                             </div>
                           </div>
 
-                        )
-                      }
+)
+}
                     })
                   }
 

@@ -1,46 +1,51 @@
 
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import img1 from '../assets/b1.jpg.webp'
 import img2 from '../assets/b2.jpg.webp'
 import img3 from '../assets/b3.jpg.webp'
 import userimg from '../assets/user.png.webp'
 import Edit_Blogtable from '../components/ui/Edit_Blogtable'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 function Blogtable() {
-  const [click,setClick] =useState(null)
-const item=[
-  {
-   blogimage:<img src={img1}></img>,
-   userimage:<img scr={userimg}></img>,
-   username:'Mark Wiens',
-   date:13,
-   react:15,
-   comment:4,
-   title:'stocking your restaurant kitchen finding reliable sellers',
-   des:'Saving money – is something we would all like to do. Whether you are struggling to manage day to day or earning a six figure salary, saving is something we all think about'
-  },
-    {
-   blogimage:<img src={img2}></img>,
-   userimage:<img scr={userimg}></img>,
-   username:'Mark Wiens',
-   date:13,
-   react:15,
-   comment:4,
-   title:'cooking for special occasions cookware in the brick and mortr',
-   des:'Let’s talk about meat fondue recipes and what you need to know first. Meat fondue also known as oil fondue is a method of cooking all kinds of meats, poultry, and seafood in a pot of heated oil.'
-  },
-    {
-   blogimage:<img src={img3}></img>,
-   userimage:<img scr={userimg}></img>,
-   username:'Mark Wiens',
-   date:13,
-   react:15,
-   comment:4,
-   title:'when your meal bites back tips for avoiding food poisoning',
-   des:'While some people really seem to have a knack for barbequing – always grilling up a perfect meal – for the rest of us, it is something that must be learned, not something that just comes naturally. Believe it or not, there is technique involved.'
-  },
-]
+  const [edit, setEdit] = useState(null)
+  const [editdata,setEditdata]=useState([])
+  const [datas, setData] = useState([]);
+  const getdatas = async () => {
+    try {
+      await axios.get('http://localhost:3000/about').then((result) => {
+      console.log(result.data)
+      setData([...result.data])
+    }).catch((eror) => {
+      console.log(eror)
+    })
+  }
+   catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getdatas()
+  }, [])
+
+   const deletedatas = async (id) => {
+    console.log(id);
+    try {
+      await axios.delete(`http://localhost:3000/about/${id}`).then((result) => {
+      console.log(result.data)
+      setEdit(null);
+getdatas();
+    }).catch((eror) => {
+      console.log(eror)
+    })
+  }
+   catch (error) {
+      console.log(error)
+    }
+  }
   return (
      <div className='flex flex-col items-center py-5'>
       
@@ -56,60 +61,66 @@ const item=[
                       <th className='border-1 border-black px-1.5 '>Comment</th>
                           <th className='border-1 border-black px-1.5 '>Title</th>
             <th className='border-1 border-black px-1.5'>Description</th>
-          <th className='border-1 border-black'>Action</th>
+          <th className='border-1 border-black px-1.5'>Action</th>
         </tr>
       </thead>
-      <tbody className='border-1'>
-        {
-          item.map((val,i)=>{
-            return(
-              <tr key={i} className='border-1'>
-                <td className='px-4'>{i+1}</td>
-              <td className='border-1 px-2 '>{val.blogimage}</td>
-              <td className='border-1'>{val.userimage}</td>
-              <td className='border-1 px-2'>{val.username}</td>
-              <td className='border-1 px-2'>{val.date}</td>
-              <td className='border-1 px-2'>{val.react}</td>
-              <td className='border-1 px-2'>{val.comment}</td>
-              <td className='border-1 w-2/12 px-2 text-sm'>{val.title}</td>
-              <td className='border-1 w-3/12 px-2 text-sm'>{val.des}</td>
-              <td className='px-4 flex gap-2 h-56 items-center justify-center'>
-                <button onClick={()=>{
-                  setClick('edit');
-                }} className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>Edit</button> 
-                {
-                  click==='edit'?
-                  <div>
-                    <Edit_Blogtable cancel={()=>{
-                     setClick()
-                    }} />
-                  </div>
-                  :null
-                }
-                <button onClick={()=>{
-                  setClick('delete')
-                }} className='bg-red-700 px-2 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
-                {
-                  click==='delete'?
-                  <div className='fixed top-0 right-0 h-full left-0 bg-red-400/60 place-content-center flex items-center'>
-<div className='place-content-center flex flex-col gap-6 text-center bg-white h-40 w-3/12 rounded'>
-  <p>Are you sure want to delete?</p>
-  <div className='flex justify-end px-5 gap-3'>
-    <button  className='border px-1 rounded'>Yes</button>
-    <button onClick={()=>{
-      setClick(null)
-    }} className='border px-1 rounded'>No</button>
-  </div>
-</div>
-                  </div>
-                  :null
-                }
-              </td>
-              </tr>
-          )
-        })
-        }
-      </tbody>
+     
+       <tbody className='border-1'>
+          {
+            datas.map((val, i) => {
+              return (
+                <tr key={i} className='border-1'>
+                  <td className='px-4'>{val.id}</td>
+                  <td className='border-1 px-4 h-5 w-5'>{val.blogimage}</td>
+                  <td className='border-1 px-4 h-5 w-5'>{val.userimage}</td>
+                   <td className='border-1 px-4 h-5 w-5'>{val.username}</td>
+                    <td className='border-1 w-14 items-center px-10'>{val.date}</td>
+                     <td className='border-1 w-14 items-center px-10'>{val.react}</td>
+                      <td className='border-1 w-14 items-center px-10'>{val.comment}</td>
+                       <td className='border-1 w-14 items-center px-10'>{val.title}</td>
+                  <td className='border-1 px-2  w-14'>{val.description}</td>
+                  <td className='px-4 py-1 flex gap-2 h-28 items-center justify-center'>
+                    <button onClick={() => {
+                      setEdit('Edit');
+                      setEditdata([val]);
+                    }} className='bg-secondary px-2 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>Edit</button>
+                    {
+                      edit === 'Edit' ?
+                        <div>
+                          <Edit_Blogtable editdata={editdata} closepop={() => setEdit()} />
+                        </div>
+
+                        : null
+                    }
+                    <button onClick={() => {
+                      setEdit('Delete');
+                    }} className='bg-red-700 px-2 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
+                    {
+                      edit === 'Delete' ?
+                        <div className='fixed top-0 left-0 right-0 h-full bg-gray-900/80 place-content-center flex items-center '>
+                          <div className='h-40 w-3/12 flex flex-col gap-6 place-content-center text-center rounded bg-white'>
+                            <p> Are you sure want to delete ?</p>
+                            <div className='flex gap-2 justify-end px-4'>
+                              <button onClick={()=>{
+                                deletedatas(val.id);
+                              }} className='border px-1 rounded'>Yes</button>
+                              <button onClick={() => {
+                                setEdit(null)
+                              }} className='border px-1 rounded'>No</button>
+                            </div>
+                          </div>
+                        </div>
+                        : null
+                    }
+                    <Link to={`/viewblog/${val.id}?id=${val.id}`} state={{id:val.id}}>
+                      <button type='submit' className='bg-secondary px-1 text-center text-white cursor-pointer hover:bg-blue-600 rounded-sm py-1 text-sm'>View</button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
      </table>
     </div>
   )

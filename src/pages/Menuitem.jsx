@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
 import Edit_Menuitem from '../components/ui/Edit_Menuitem'
+
 function Menuitem() {
   const item = [
     {
@@ -152,7 +153,7 @@ function Menuitem() {
                     }} className='bg-red-700 px-3 text-white rounded-sm py-1 text-sm hover:bg-red-800'>Delete</button>
                     {
                       click === 'delete' ?
-                        <div className='top-0 left-0 right-0 fixed h-full bg-red-400/20 flex items-center place-content-center'>
+                        <div className='top-0 left-0 right-0 fixed h-full bg-gray-900/30 flex items-center place-content-center'>
                           <div className='bg-white h-40 rounded w-3/12 place-content-center gap-6 text-center flex flex-col'>
                             <p className=''>Are you sure want to delete ?</p>
                             <div className='flex justify-end  gap-2 px-5'>
@@ -164,6 +165,7 @@ function Menuitem() {
                           </div>
                         </div> : null
                     }
+                      
                   </td>
                 </tr>
               )

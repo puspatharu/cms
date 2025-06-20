@@ -5,15 +5,17 @@ import Aboutsection from '../components/pagecomponents/Home/Aboutsection'
 import Menusection from '../components/pagecomponents/Home/Menusection'
 import Reviewsection from '../components/pagecomponents/Home/Reviewsection'
 import Blogsection from '../components/pagecomponents/Home/Blogsection'
+import BlogVideo from '../components/pagecomponents/Home/BlogVideo'
+
 function Home() {
   return (
     <div className='flex lg:gap-19 gap-15 px-4  py-5 flex-col'>
       <HeroSection />
       <Aboutsection />
       <Menusection />
+      <BlogVideo />
       <Reviewsection />
       <Blogsection />
-   
     </div>
   )
 }

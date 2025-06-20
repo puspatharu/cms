@@ -4,11 +4,14 @@ import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import upload from '../../../assets/upload.webp'
+import axios from 'axios';
+import toast , { Toaster } from 'react-hot-toast';
+
 function Chefsection() {
   const forms = [
     { name: "title", type: "text" },
     { name: "subtitle", type: "text" },
-    { name: "image", type: "file" },
+    { name: "imagechef", type: "file" },
     
     { name: "chef_name", type: "text" },
     
@@ -31,8 +34,27 @@ function Chefsection() {
           value => value ? /^[A-Z]/.test(value) : true
         )
   })
+    const fileUpload=(data,setFieldValue)=>{
+    console.log(data);
+    try {
+      const formdata=new FormData()
+     formdata.append('files',data)
+      axios.post('http://localhost:3000/fileupload',formdata)
+      .then((result)=>{
+console.log(result.data)
+  setFieldValue('imagechefid',result.data.id)
+                setFieldValue('imagechef',result.data.file)
+toast.success('successfully submitted')
+      }).catch((eror)=>{
+console.log(eror)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className='lg:grid grid-cols-10 w-full gap-28'>
+   <Toaster />
  <div className='col-span-3'>
         <div className='text-xl font-medium'>
           Chef section
@@ -60,7 +82,8 @@ function Chefsection() {
         subtitle: "",
         chef_name: "",
     
-        image: "",
+        imagechef: "",
+        imagechefid:''
         
       }}
         onSubmit={(values) => {
@@ -80,20 +103,21 @@ function Chefsection() {
                           <label className=' text-base font-semibold'>
                             {val.name}
                             </label>
-                          <label className='text-sm bg-tertiary outline-none h-32 flex flex-col items-center justify-center'>
-                            {val.name}
+                          <label htmlFor={val.name} className='text-sm bg-tertiary outline-none h-60 flex flex-col items-center justify-center'>
+                            {/* {val.name} */}
 
                             <input
                               id={val.name}
                               type={val.type}
                               name={val.name}
                               onChange={(e) => {
-                                setFieldValue(val.name, e.target.files[0]);
+                                fileUpload(e.target.files[0],setFieldValue)
+                                // setFieldValue(val.name, e.target.files[0]);
                               }} className='outline-none hidden' />
-                            <label className='flex items-center justify-center' htmlFor={val.title}>
-                              {values.image ? (
-                                <img src={URL.createObjectURL(values.image)}
-                                  className='h-20'
+                            <label className='flex items-center h-full w-full justify-center' htmlFor={val.name}>
+                              {values.imagechef ? (
+                                <img src={values.imagechef}
+                                  className='h-full w-full object-contain'
                                 />
                               ) : (
 

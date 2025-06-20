@@ -1,11 +1,11 @@
 
 import React from 'react'
-import HomeSection from '../components/pagecomponents/Element/HomeSection'
 
+import Homesection from '../components/pagecomponents/Menu/Homesection'
 function Element() {
   return (
-    <div className='mx-15'>
-      <HomeSection />
+    <div className=' px-4  py-5 '>
+      <Homesection />
     </div>
   )
 }

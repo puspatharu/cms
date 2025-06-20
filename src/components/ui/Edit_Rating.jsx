@@ -2,37 +2,47 @@
 import React from 'react'
 import { Formik, Form, Field } from 'formik';
 import upload from '../../assets/upload.webp'
-function Edit_Rating({closepop}) {
+import axios from 'axios';
+function Edit_Rating({closepop,editdata}) {
+  console.log(editdata)
    const forms = [
-    { name: "title", type: "text" },
-    { name: "subtitle", type: "text" },
+     { name: "title", type: "text" },
+     { name: 'description', type: 'text' },
     { name: "image", type: "file" },
-    { name: "event_name", type: "text" },
      { name: "starNum", type: "number" },
-    { name: 'description', type: 'text' }
   ]
   return (
-    <div className='top-0 left-0 right-0 fixed h-full bg-red-400/20 flex items-center place-content-center'>
+    <div className='top-0 left-0 right-0 fixed h-full bg-gray-900/50 flex items-center place-content-center'>
       <div className='bg-white rounded w-5/12'>
 
 <div>
       <Formik initialValues={{
-        title: '',
-        subtitle: "",
-        event_name: "",
-        description: '',
-        starNum:'',
+        title:  editdata.length>0 && editdata[0].title?editdata[0].title:'',
+        subtitle:  editdata.length>0 && editdata[0].subtitle?editdata[0].subtitle:'',
+        event_name:  editdata.length>0 && editdata[0].event_name?editdata[0].event_name:'',
+        description:  editdata.length>0 && editdata[0].description?editdata[0].description:'',
+        starNum:editdata.length>0 && editdata[0].numberofstar?editdata[0].numberofstar:'',
         image: "",
         
       }}
         onSubmit={(values) => {
-          console.log(values);
+          try {
+    axios.patch(`http://localhost:3000/rating/${editdata.length>0 && editdata[0].id}`,values).then((result)=>{
+ console.log(result.data)
+          
+              // console.log(values);
+    }).catch((err)=>{
+      console.log(err)
+    })
+  } catch (error) {
+    console.log(error)
+  } 
         }}
        >
 
-        {({ values, setFieldValue }) => {
+        {({ values, setFieldValue ,handleSubmit}) => {
           return (
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <div className='flex flex-col capitalize gap-2 w-full lg:px-15 py-4'>
                 {
                   forms.map((val, i) => {
@@ -84,7 +94,8 @@ function Edit_Rating({closepop}) {
                 <div className='flex gap-2'>
 
                 <button type='submit' className='border-1.5 border-black rounded-xl w-fit px-3 py-1 bg-secondary text-white font-medium'>Submit</button>
-                 <button onClick={closepop} type='cancel' className='border-1.5 border-black rounded-xl w-fit px-3 py-1 bg-red-400 text-white font-medium'>Cancel</button>
+
+                 <div onClick={closepop} type='cancel' className='border-1.5 border-black rounded-xl w-fit px-3 py-1 bg-red-400 text-white font-medium'>Cancel</div>
               </div>
                 </div>
             </Form>

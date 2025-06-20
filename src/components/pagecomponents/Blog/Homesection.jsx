@@ -4,11 +4,13 @@ import React from 'react'
 import { Form, Formik, Field, ErrorMessage } from 'formik'
 import upload from '../../../assets/upload.webp'
 import * as Yup from 'yup'
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 function Homesection() {
   const forms = [
     { name: 'title', type: "text" },
     { name: "subtitle", type: "text" },
-    { name: "image", type: "file" },
+    { name: "imageblogbanner", type: "file" },
   ];
   const schema = Yup.object().shape({
     title: Yup.string()
@@ -25,9 +27,27 @@ function Homesection() {
       value => value ? /^[A-Z]/.test(value) : true
     ),
   })
-
+  const fileUpload=(data,setFieldValue)=>{
+    console.log(data);
+    try {
+      const formdata=new FormData()
+     formdata.append('files',data)
+      axios.post('http://localhost:3000/fileupload',formdata)
+      .then((result)=>{
+console.log(result.data)
+  setFieldValue('imageblogbannerid',result.data.id)
+                setFieldValue('imageblogbanner',result.data.file)
+toast.success('successfully submitted')
+      }).catch((eror)=>{
+console.log(eror)
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className='lg:grid grid-cols-10 w-full gap-28'>
+      <Toaster />
       <div className='col-span-3'>
         <div className='text-xl font-medium'>
           Home Section
@@ -57,8 +77,8 @@ function Homesection() {
         <Formik initialValues={{
           subtitle: "",
           title: "",
-    
-          image: ""
+    imageblogbannerid:'',
+          imageblogbanner: ""
         }}
           onSubmit={(values) => {
             console.log(values);
@@ -81,19 +101,20 @@ function Homesection() {
                             <label className=' text-base font-semibold'>
                             {val.name}
                             </label> 
-                            <label className='text-sm bg-tertiary outline-none h-32 flex flex-col items-center justify-center'>
-                              {val.name}
+                            <label htmlFor={val.name} className='text-sm bg-tertiary outline-none h-60 flex flex-col items-center justify-center'>
+                              {/* {val.name} */}
                               <input
                                 id={val.name}
                                 type={val.type}
                                 name={val.name}
                                 onChange={(e) => {
-                                  setFieldValue(val.name, e.target.files[0]);
+                                  fileUpload(e.target.files[0],setFieldValue)
+                                  // setFieldValue(val.name, e.target.files[0]);
                                 }} className='outline-none hidden' />
-                              <label className='flex items-center justify-center' htmlFor={val.title}>
-                                {values.image ? (
-                                  <img src={URL.createObjectURL(values.image)}
-                                    className='h-14'
+                              <label className='flex items-center justify-center h-full w-full' htmlFor={val.name}>
+                                {values.imageblogbanner ? (
+                                  <img src={values.imageblogbanner}
+                                    className='h-full w-full object-contain'
                                   />
                                 ) : (
 

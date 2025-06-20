@@ -16,9 +16,11 @@ import Blogtable from './pages/Blogtable'
 import Cardtable from './pages/Cardtable'
 import Rating from './pages/Rating'
 import Button from './pages/Button'
+import Viewall from './components/View/Viewall'
+import View_Blogtable from './components/View/View_Blogtable'
+import View_Card from './components/View/View_Card'
+import View_Rating from './components/View/View_Rating'
 function App() {
-
-
   return (
     <>
       <Routes>
@@ -36,6 +38,10 @@ function App() {
           <Route path='/cardtable' element={<Cardtable />} />
           <Route path='/rating' element={<Rating />} /> 
           <Route path='/button' element={<Button />} />
+          <Route path='/view/:id' element={<Viewall />}></Route>
+          <Route path='/viewblog/:id' element={<View_Blogtable />}></Route>
+          <Route path='/viewcard/:id' element={<View_Card />}></Route>
+          <Route path='/viewrating/:id' element={<View_Rating />}></Route>
         </Route>
       </Routes>
 
